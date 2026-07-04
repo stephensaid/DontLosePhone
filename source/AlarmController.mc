@@ -21,8 +21,8 @@ class AlarmController {
     }
 
     private var state = AlarmState.IDLE;
-    private var alarmStartTime = null;
     private var snoozeTimer = null;
+    // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
     private var alarmCallbacks = [];
 
@@ -35,9 +35,8 @@ class AlarmController {
      */
     function triggerAlarm() {
         self.state = AlarmState.ALARMING;
-        self.alarmStartTime = System.getElapsedTime();
         
-        // TODO: Switch to AlarmScreen
+        // TODO: Switch to AlarmScreen with title, dismiss button, and snooze labels
         // TODO: Start vibration pattern
         // TODO: Log event
     }
@@ -60,17 +59,9 @@ class AlarmController {
      */
     function dismiss() {
         self.state = AlarmState.IDLE;
-        self.alarmStartTime = null;
         
         // TODO: Cancel any pending snooze
         // TODO: Return to normal monitoring
-    }
-
-    function getElapsedTime() {
-        if (self.alarmStartTime == null) {
-            return 0;
-        }
-        return System.getElapsedTime() - self.alarmStartTime;
     }
 
     function isAlarming() {

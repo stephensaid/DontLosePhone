@@ -29,9 +29,13 @@ Standard phone tethers trigger annoying alarms the second Bluetooth drops, even 
 
 When the app determines you have truly left your phone behind, the active alarm screen takes over your watch.
 
-* **Theme-Adaptive Design:** The screen automatically detects whether your watch is currently set to a Light or Dark theme. It draws high-contrast elements (deep blacks for night/indoors, crisp whites for outdoor sunlight) so it is instantly readable in any environment.  
-* **Main Counter:** Displays a bold, real-time timer in the center of the screen, showing exactly how many minutes and seconds have elapsed since the connection was severed.  
-* **Dynamic Button Guides:** Directly next to your watch's physical keys, the screen displays dynamic labels. It looks up your custom snooze times and displays them next to the keys (e.g., **"Zzz 5m"** or **"Zzz 20m"**) alongside a red **"X"** for the Dismiss button.
+* **Title:** Displays **"Don't Forget Phone"** at the top of the screen as the primary alert message.
+* **Button Guides:** The screen displays dynamic labels directly next to your watch's physical keys based on your settings:
+  * **Top Right Button:** Always shows a Dismiss indicator
+  * **Middle Left Button:** If Snooze 2 is enabled, shows **"Zzz 20m"** (or custom duration)
+  * **Bottom Left Button:** If Snooze 1 is enabled, shows **"Zzz 5m"** (or custom duration)
+  * **Bottom Right Button:** If Snooze 3 is enabled, shows **"Zzz X"** (or custom duration), or is hidden if set to Unset or Dismiss
+* **Theme-Adaptive Design:** Uses Garmin's native high-contrast alarm styling, which automatically adapts to your watch's Light or Dark theme setting for visibility in any lighting condition.
 
 ## **4\. Physical Button Controls**
 
@@ -44,10 +48,10 @@ The watch's physical buttons are divided logically to make managing an alarm int
        ┌─────────────────────┐  
        │                     │  
 \[Middle Left Button\] ────────┼─────────\> (Bottom Right Button)  
-\--\> Snooze 1 (or Unset)      │  ALARM  │  \--\> Dismiss, Snooze 3, or Unset  
+\--\> Snooze 2 (or Unset)      │  ALARM  │  \--\> Dismiss, Snooze 3, or Unset  
                              │ ACTIVE  │  
 \[Bottom Left Button\] ────────┼─────────┘  
-\--\> Snooze 2 (or Unset)      │                     │  
+\--\> Snooze 1 (or Unset)      │                     │  
                              └─────────────────────┘
 
 * **Top Right Button (Start/Enter): Hardlocked Dismiss**  
@@ -55,14 +59,14 @@ The watch's physical buttons are divided logically to make managing an alarm int
 * **Bottom Right Button (Back/Lap): Customizable Action**  
   * By default, this also acts as a **Dismiss** button (pressing either right-side button cancels the alarm).  
   * You can customize this button to act as **Snooze 3** (a long snooze), or set it to **Unset** (the watch ignores the button during an alarm to prevent accidental presses).  
-* **Middle Left Button (Up/Menu): Snooze 1 (Short)**  
-  * Silences the alert for a quick break (Default: 5 minutes). Can also be set to **Unset** to disable this key.  
-* **Bottom Left Button (Down): Snooze 2 (Medium)**  
-  * Silences the alert for a medium duration (Default: 20 minutes). Can also be set to **Unset** to disable this key.
+* **Middle Left Button (Up/Menu): Snooze 2 (Medium)**  
+  * Silences the alert for a medium duration (Default: 20 minutes). Can also be set to **Unset** to disable this key.  
+* **Bottom Left Button (Down): Snooze 1 (Short)**  
+  * Silences the alert for a quick break (Default: 5 minutes). Can also be set to **Unset** to disable this key.
 
 ## **5\. Settings Directory**
 
-You can configure these preferences directly on your watch's settings menu or via the Garmin Connect Mobile app on your smartphone:
+You can configure these preferences via the Garmin Connect Mobile app on your smartphone. The watch settings menu provides quick adjustments with clear, concise labels. For detailed explanations of each setting, refer to the descriptions in the Garmin Connect Mobile app or this guide.
 
 ### **Core Alarm Settings**
 
@@ -71,10 +75,10 @@ You can configure these preferences directly on your watch's settings menu or vi
 
 ### **Button & Snooze Configurations**
 
-* **Middle Left Key:** Set to **Snooze 1** or **Unset**.  
-* **Snooze 1 Duration:** Set the exact number of minutes for your short snooze (unrestricted range).  
-* **Bottom Left Key:** Set to **Snooze 2** or **Unset**.  
+* **Middle Left Key:** Set to **Snooze 2** or **Unset**.  
 * **Snooze 2 Duration:** Set the exact number of minutes for your medium snooze (unrestricted range).  
+* **Bottom Left Key:** Set to **Snooze 1** or **Unset**.  
+* **Snooze 1 Duration:** Set the exact number of minutes for your short snooze (unrestricted range).  
 * **Bottom Right Key:** Set to **Dismiss**, **Snooze 3**, or **Unset**.  
 * **Snooze 3 Duration:** Set the exact number of minutes for your long snooze (unrestricted range).
 

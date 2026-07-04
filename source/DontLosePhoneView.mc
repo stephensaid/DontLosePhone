@@ -21,11 +21,10 @@ class DontLosePhoneView extends WatchUi.WatchFace {
 
     // Update the view
     function onUpdate(dc) {
-        // Set background color based on theme (light/dark)
-        var backgroundColor = Graphics.COLOR_WHITE;
-        var textColor = Graphics.COLOR_BLACK;
+        // Use platform's native high-contrast alarm styling
+        // Garmin's default alarm screen already handles theme-adaptive colors
+        // (no custom theme handling needed)
         
-        dc.setColor(textColor, backgroundColor);
         dc.clear();
         
         // Display welcome message
