@@ -1,0 +1,24 @@
+# Garmin Connect IQ Build Artifacts
+bin/
+*.prg
+*.iq
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Java
+*.class
+*.jar
+
+# Build artifacts
+*.o
+*.obj

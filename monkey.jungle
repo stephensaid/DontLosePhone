@@ -1,0 +1,12 @@
+project.manifest = manifest.xml
+base.dir = .
+
+source.dir = source
+resources.dir = resources
+
+# Build configuration
+is_test_build = false
+is_debug_build = true
+
+# Exclude test builds if you add them later
+exclude = test

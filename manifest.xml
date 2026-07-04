@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iq:manifest xmlns:iq="http://developer.garmin.com/xml/iq">
+    <!-- App manifest for Don't Lose Phone (DLH) -->
+    <iq:application id="com.stephenharding.dontlosephone" type="watch-app" name="@Strings.AppName">
+        <iq:version>0.1.0</iq:version>
+        <iq:permission id="sensorHistory"/>
+        <iq:permission id="positioning"/>
+        <iq:permission id="communications"/>
+        
+        <!-- Target devices: smartwatch platforms -->
+        <iq:products>
+            <!-- Fenix Series -->
+            <iq:product id="fenix5"/>
+            <iq:product id="fenix5plus"/>
+            <iq:product id="fenix5s"/>
+            <iq:product id="fenix5splus"/>
+            <iq:product id="fenix5x"/>
+            <iq:product id="fenixchronos"/>
+            <iq:product id="fenix6"/>
+            <iq:product id="fenix6pro"/>
+            <iq:product id="fenix6s"/>
+            <iq:product id="fenix6spro"/>
+            <iq:product id="fenix6xpro"/>
+            <iq:product id="fenix7"/>
+            <iq:product id="fenix7s"/>
+            <iq:product id="fenix7x"/>
+            <!-- Epix Series -->
+            <iq:product id="epix_gen2"/>
+            <!-- Venu Series -->
+            <iq:product id="venu"/>
+            <iq:product id="venuplus"/>
+            <iq:product id="venu2"/>
+            <iq:product id="venu2plus"/>
+            <iq:product id="venu2s"/>
+            <iq:product id="venu3"/>
+            <iq:product id="venu3s"/>
+        </iq:products>
+        
+        <iq:permissions/>
+        
+        <!-- Entry point -->
+        <iq:runtime-permissions>
+            <iq:permission-group id="sensorHistory"/>
+            <iq:permission-group id="positioning"/>
+            <iq:permission-group id="communications"/>
+        </iq:runtime-permissions>
+    </iq:application>
+</iq:manifest>
