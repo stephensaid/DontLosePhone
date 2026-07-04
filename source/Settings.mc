@@ -12,6 +12,13 @@ import Toybox.Storage;
  */
 class Settings {
 
+    // Alert type constants (universal setting for all alerts)
+    enum AlertType {
+        VIBRATION_ONLY = 0,
+        SOUND_ONLY = 1,
+        VIBRATION_AND_SOUND = 2
+    }
+
     // Setting keys
     static const KEY_TIMEOUT = "dlh_timeout";
     static const KEY_MOTION_GATE = "dlh_motion_gate";
@@ -23,15 +30,17 @@ class Settings {
     static const KEY_BTN_LEFT_MID = "dlh_btn_left_mid";
     static const KEY_BTN_LEFT_BOT = "dlh_btn_left_bot";
     static const KEY_BTN_RIGHT_BOT = "dlh_btn_right_bot";
+    static const KEY_ALERT_TYPE = "dlh_alert_type";  // Universal alert setting
 
     // Default values
-    static const DEFAULT_TIMEOUT = 10;          // seconds
-    static const DEFAULT_MOTION_GATE = true;    // enabled
-    static const DEFAULT_GPS_ENABLED = true;    // enabled (users can disable to save battery)
-    static const DEFAULT_GPS_THRESHOLD = 20;    // meters
-    static const DEFAULT_SNOOZE_1 = 5;          // minutes
-    static const DEFAULT_SNOOZE_2 = 20;         // minutes
-    static const DEFAULT_SNOOZE_3 = 0;          // minutes (0 = disabled)
+    static const DEFAULT_TIMEOUT = 10;                                // seconds
+    static const DEFAULT_MOTION_GATE = true;                          // enabled
+    static const DEFAULT_GPS_ENABLED = true;                          // enabled (users can disable to save battery)
+    static const DEFAULT_GPS_THRESHOLD = 20;                          // meters
+    static const DEFAULT_SNOOZE_1 = 5;                                // minutes
+    static const DEFAULT_SNOOZE_2 = 20;                               // minutes
+    static const DEFAULT_SNOOZE_3 = 0;                                // minutes (0 = disabled)
+    static const DEFAULT_ALERT_TYPE = AlertType.VIBRATION_AND_SOUND;  // default: both vibration and sound
 
     /**
      * Get setting value with fallback to default

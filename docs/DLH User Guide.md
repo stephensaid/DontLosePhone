@@ -97,6 +97,13 @@ You can configure these preferences via the Garmin Connect Mobile app on your sm
 * **Bottom Right Key:** Set to **Dismiss**, **Snooze 3**, or **Unset**.  
 * **Snooze 3 Duration:** Set the exact number of minutes for your long snooze (unrestricted range).
 
+### **Alert Settings**
+
+* **Alert Type:** Customize how the app notifies you when an alarm triggers. Choose one:
+  * **Vibration Only:** Silent alert with vibration pattern only (great for quiet environments).
+  * **Sound Only:** Audible alert with tone (great for busy environments).
+  * **Vibration + Sound:** Both vibration and sound for maximum alertness (default).
+
 ### **GPS Proximity Settings (Sub-Menu)**
 
 * **Distance Filter (On/Off):** Toggle GPS tracking on or off. Turning this off completely disables background GPS search to maximize battery life.  

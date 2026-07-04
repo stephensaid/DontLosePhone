@@ -25,6 +25,7 @@ class AlarmController {
     // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
     private var alarmCallbacks = [];
+    private var alertType = 2;  // Default: VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
 
     function initialize() {
         // Initialize with default snooze durations
@@ -37,7 +38,10 @@ class AlarmController {
         self.state = AlarmState.ALARMING;
         
         // TODO: Switch to AlarmScreen with title, dismiss button, and snooze labels
-        // TODO: Start vibration pattern
+        // TODO: Trigger alert based on alertType:
+        //       - 0 (VIBRATION_ONLY): Vibration pattern only
+        //       - 1 (SOUND_ONLY): Audible tone only
+        //       - 2 (VIBRATION_AND_SOUND): Both vibration and sound
         // TODO: Log event
     }
 
@@ -70,6 +74,18 @@ class AlarmController {
 
     function setSnoozeDurations(duration1, duration2, duration3) {
         self.snoozeDurations = [duration1, duration2, duration3];
+    }
+
+    /**
+     * Set the alert type (universal setting for all alerts)
+     * 0 = VIBRATION_ONLY, 1 = SOUND_ONLY, 2 = VIBRATION_AND_SOUND
+     */
+    function setAlertType(type) {
+        self.alertType = type;
+    }
+
+    function getAlertType() {
+        return self.alertType;
     }
 
 }

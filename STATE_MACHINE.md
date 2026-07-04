@@ -97,6 +97,15 @@ class AppState {
 }
 ```
 
+### AlertType (Universal Setting)
+```monkey-c
+enum AlertType {
+    VIBRATION_ONLY = 0,      // Silent: vibration pattern only
+    SOUND_ONLY = 1,          // Audible: tone only
+    VIBRATION_AND_SOUND = 2  // Maximum alertness: both (default)
+}
+```
+
 ### BluetoothMonitor
 ```monkey-c
 class BluetoothMonitor {
@@ -133,8 +142,14 @@ class AlarmController {
     var snoozeDurations [5, 20, custom]
     var activeSnooze null/duration
     var buttonConfig {snooze1, snooze2, snooze3, dismiss}
+    var alertType (VIBRATION_ONLY, SOUND_ONLY, VIBRATION_AND_SOUND)  // Universal setting
 }
 ```
+
+When alarm triggers:
+- **AlertType.VIBRATION_ONLY (0)**: Vibration pattern only (silent, ideal for office/meetings)
+- **AlertType.SOUND_ONLY (1)**: Audible tone only (ideal for noisy environments)
+- **AlertType.VIBRATION_AND_SOUND (2)**: Both vibration + sound (maximum alertness, default)
 
 ### Settings (Persistent)
 ```monkey-c
@@ -297,12 +312,12 @@ function detectTransportMode() {
 
 ### Power Budget
 
-| Sensor/Feature | Power Impact | Status |
-|---|---|---|
-| BT Monitoring | Low | Always on (required for connection detection) |
-| Accelerometer | Very Low | On when BT disconnected (needed for motion gate) |
+| Sensor/Feature   | Power Impact | Status                                                              |
+| ---------------- | ------------ | ------------------------------------------------------------------- |
+| BT Monitoring    | Low          | Always on (required for connection detection)                       |
+| Accelerometer    | Very Low     | On when BT disconnected (needed for motion gate)                    |
 | GPS (continuous) | **CRITICAL** | **OFF by default** - only when GPS Proximity enabled + BT connected |
-| Display | Medium | Only during alarm |
+| Display          | Medium       | Only during alarm                                                   |
 
 ### Key Optimization Decisions
 
