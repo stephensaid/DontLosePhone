@@ -2,7 +2,6 @@
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="1">
   <iq:application id="C0FFC0FFEE00C0FFC0FFEE00C0FFC0FF" type="watch-app" name="@Strings.AppName" entry="DontLosePhoneApp" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="3.0.0">
     <iq:products>
-      <iq:product id="epix2"/>
       <iq:product id="fenix7"/>
       <iq:product id="fenix7pro"/>
       <iq:product id="fenix7pronowifi"/>

@@ -52,13 +52,22 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
     
     function onMenu() {
         // Middle left button pressed
-        if (self.alarmController != null && self.alarmController.isAlarming()) {
-            var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
-            if (snooze2 > 0) {
-                self.alarmController.snooze(snooze2);
+        if (self.alarmController != null) {
+            if (self.alarmController.isAlarming()) {
+                // Snooze when alarm is active
+                var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
+                if (snooze2 > 0) {
+                    self.alarmController.snooze(snooze2);
+                    WatchUi.requestUpdate();
+                }
+                return true;
+            } else {
+                // DEBUG MODE: Trigger alarm for testing when not already alarming
+                System.println("DEBUG: Manual alarm trigger via Menu button");
+                self.alarmController.triggerAlarm();
                 WatchUi.requestUpdate();
+                return true;
             }
-            return true;
         }
         return false;
     }
