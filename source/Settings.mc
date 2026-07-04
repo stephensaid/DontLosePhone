@@ -15,7 +15,7 @@ class Settings {
     // Setting keys
     static const KEY_TIMEOUT = "dlh_timeout";
     static const KEY_MOTION_GATE = "dlh_motion_gate";
-    static const KEY_GPS_ENABLED = "dlh_gps_enabled";
+    static const KEY_GPS_ENABLED = "dlh_gps_enabled";  // CRITICAL: Controls GPS power usage
     static const KEY_GPS_THRESHOLD = "dlh_gps_threshold";
     static const KEY_SNOOZE_1 = "dlh_snooze_1";
     static const KEY_SNOOZE_2 = "dlh_snooze_2";
@@ -27,7 +27,7 @@ class Settings {
     // Default values
     static const DEFAULT_TIMEOUT = 10;          // seconds
     static const DEFAULT_MOTION_GATE = true;    // enabled
-    static const DEFAULT_GPS_ENABLED = true;    // enabled
+    static const DEFAULT_GPS_ENABLED = true;    // enabled (users can disable to save battery)
     static const DEFAULT_GPS_THRESHOLD = 20;    // meters
     static const DEFAULT_SNOOZE_1 = 5;          // minutes
     static const DEFAULT_SNOOZE_2 = 20;         // minutes

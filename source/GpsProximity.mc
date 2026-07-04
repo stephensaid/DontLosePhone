@@ -5,10 +5,13 @@ import Toybox.System;
  * GpsProximity - Tracks GPS location and determines if phone is nearby
  * 
  * Responsibilities:
- * - Store last-known phone location
- * - Update current position during connection
+ * - Only maintains GPS if feature is enabled in settings (battery optimization)
+ * - Store last-known phone location when BT disconnects
+ * - Update current position during connection (only if feature enabled)
  * - Calculate distance when connection drops
  * - Determine if threshold is exceeded
+ * 
+ * NOTE: GPS is resource-intensive. Only keep it active if user has GPS Proximity enabled.
  */
 class GpsProximity {
 

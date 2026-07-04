@@ -156,21 +156,27 @@ while (app running) {
     1. Check Bluetooth connection state
     
     if (BT_CONNECTED) {
-        - Lock current GPS as valid location
-        - Update lastValidGps timestamp
+        // GPS only active if GPS Proximity setting enabled
+        if (GPS_PROXIMITY_ENABLED) {
+            - Lock current GPS as valid location
+            - Update lastValidGps timestamp
+        }
+        // else: GPS off, save battery
         
     } else if (BT_DISCONNECTED && state != SNOOZED) {
         
         if (state == NORMAL_MONITORING) {
             → Transition to CONNECTION_TIMEOUT
             → Start timeout countdown
-            → Disable GPS (save battery)
+            // GPS already off due to disconnect; only activate if needed in motion checks
+            → Disable all sensors except accelerometer
         }
         
         if (state == CONNECTION_TIMEOUT) {
             if (timeout_expired) {
                 → Transition to MOTION_CHECK
-                → Enable accelerometer monitoring
+                → Enable accelerometer monitoring (minimal battery impact)
+                // Do NOT activate GPS yet - wait for motion detection
             }
         }
         
@@ -178,10 +184,12 @@ while (app running) {
             checkMotionGate():
                 if (walking_detected OR speed_increase_detected) {
                     if (GPS_PROXIMITY_ENABLED) {
+                        // Only activate GPS if setting is enabled
                         → Transition to GPS_PROXIMITY
-                        → Lock Point A (current GPS if valid & recent)
+                        → Enable GPS and lock Point A (current GPS if valid & recent)
                         → Start distance monitoring
                     } else {
+                        // GPS disabled - alarm based on motion alone
                         → Transition to ALARM_ACTIVE
                     }
                 }
@@ -200,6 +208,7 @@ while (app running) {
     } else if (state == SNOOZED) {
         if (BT_RECONNECTED) {
             → Cancel snooze countdown
+            → Resume GPS monitoring if GPS_PROXIMITY_ENABLED
             → Reset to NORMAL_MONITORING
             → No notification
         }
@@ -213,11 +222,13 @@ while (app running) {
     if (state == ALARM_ACTIVE) {
         if (BT_RECONNECTED) {
             → Dismiss alarm
+            → Resume GPS monitoring if GPS_PROXIMITY_ENABLED
             → Transition to NORMAL_MONITORING
         }
         
         if (user_pressed_dismiss) {
             → Dismiss alarm
+            → Resume GPS monitoring if GPS_PROXIMITY_ENABLED
             → Transition to NORMAL_MONITORING
         }
         
@@ -225,6 +236,7 @@ while (app running) {
             → Dismiss alarm screen
             → Start snooze timer
             → Transition to SNOOZED
+            // GPS remains off during snooze
         }
     }
     
@@ -280,4 +292,42 @@ function detectTransportMode() {
 2. **Phase 2**: Transport Mode detection
 3. **Phase 3**: Sophisticated motion analysis (walking cadence)
 4. **Phase 4**: GPS staleness optimization
+
+## Battery Optimization Strategy
+
+### Power Budget
+
+| Sensor/Feature | Power Impact | Status |
+|---|---|---|
+| BT Monitoring | Low | Always on (required for connection detection) |
+| Accelerometer | Very Low | On when BT disconnected (needed for motion gate) |
+| GPS (continuous) | **CRITICAL** | **OFF by default** - only when GPS Proximity enabled + BT connected |
+| Display | Medium | Only during alarm |
+
+### Key Optimization Decisions
+
+1. **GPS Only When Enabled & Connected**
+   - GPS drains battery rapidly
+   - Only activate if user enables "GPS Proximity" setting
+   - Disable immediately on BT disconnect
+   - Users can disable GPS Proximity to extend battery life (falls back to Motion Gate only)
+
+2. **Accelerometer Always Available**
+   - Very low power draw
+   - Essential for motion detection during disconnect
+   - Lightweight pattern matching (walking cadence)
+
+3. **CPU Sleep Between Checks**
+   - Main loop periodically sleeps when idle
+   - Wakes on significant events (BT status, motion detection, timers)
+   - Prevents constant polling
+
+### Recommended Check Intervals
+
+- BT status check: Every 100-500ms
+- Accelerometer sampling: 10-50Hz (continuous during motion check, not between)
+- Motion analysis: Every 1-2 seconds during MOTION_CHECK state
+- GPS update: Every 5-10 seconds (only when connected + GPS enabled)
+
+
 

@@ -23,8 +23,9 @@ Standard phone tethers trigger annoying alarms the second Bluetooth drops, even 
 
 ### **Tier 3: GPS Proximity Guard (Distance Check)**
 
-* **How it works:** While your phone is safely connected, your watch continuously maintains a fresh GPS fix. The moment the connection drops, it locks the current GPS coordinate as **Point A** (the phone's location).
+* **How it works:** While your phone is safely connected, your watch continuously maintains a fresh GPS fix **only if GPS Proximity is enabled in settings**. The moment the connection drops, it locks the current GPS coordinate as **Point A** (the phone's location).
 * **GPS Requirement:** Point A can only be locked if the watch has a valid, recent GPS location. Stale or degraded GPS data is not used. If GPS is unavailable when the connection drops, the app falls back to Bluetooth connectivity and timeout monitoring until a valid GPS location is obtained.
+* **Battery Optimization:** GPS is only kept active while the phone is connected and GPS Proximity monitoring is enabled. When disabled, the watch uses only Bluetooth and motion detection, significantly reducing battery drain.
 * **The Math:** Once you start walking, the watch measures the actual straight-line distance between your current position and Point A.  
 * **The Trigger:** The alarm will only fire if you physically walk past your set threshold (e.g., 20 meters away). This allows you to walk to a nearby counter to pay for an espresso or grab a cup of water without your watch screaming, but protects you if you walk completely out of the area or if someone walks away with your bike.
 

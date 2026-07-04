@@ -5,9 +5,13 @@ import Toybox.System;
  * MotionGate - Detects user motion to gate alarm triggering
  * 
  * Responsibilities:
- * - Monitor accelerometer data
- * - Detect if user is stationary or moving
+ * - Monitor accelerometer data when phone is disconnected
+ * - Detect meaningful walking cadence (not arm movement)
+ * - Detect rapid speed increase (transport mode)
  * - Only allow alarm if significant motion detected
+ * 
+ * BATTERY NOTE: Accelerometer has low power impact compared to GPS.
+ * Keep it enabled for motion detection; GPS is the primary power drain.
  */
 class MotionGate {
 
