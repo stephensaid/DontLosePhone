@@ -49,6 +49,36 @@ A Garmin Connect IQ smartwatch application that acts as an active phone tether, 
 - Epix Gen 2
 - Venu Series (1, 2, 3, plus, s)
 
+## Development
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions and development workflow.
+
+**Quick Start:**
+1. Install Garmin Connect IQ SDK 9.2.0
+2. Clone repository
+3. Build with `Ctrl+Shift+B` in VS Code
+4. Run simulator to test
+
+## Documentation
+
+- **[DLH User Guide](docs/DLH%20User%20Guide.md)** - Complete feature specification
+- **[STATE_MACHINE.md](docs/STATE_MACHINE.md)** - Architecture and state transitions
+- **[SETUP.md](docs/SETUP.md)** - Environment setup instructions
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development workflow and guidelines
+- **[.copilot-instructions.md](.copilot-instructions.md)** - AI assistant guidance
+
+## Repository
+
+- **GitHub**: [stephensaid/DontLosePhone](https://github.com/stephensaid/DontLosePhone)
+- **License**: MIT (or specify your license)
+
+## Project Status
+
+- ✅ **Phase 1 Complete**: Core functionality (BT monitor, motion gate, GPS proximity, alarm)
+- ⏳ **Phase 2**: Settings UI and enhanced status display
+- ⏳ **Phase 3**: Advanced behaviors
+- ⏳ **Phase 4**: Optimization and testing
+
 ## Project Structure
 
 ```
