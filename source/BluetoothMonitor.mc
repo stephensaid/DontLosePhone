@@ -1,5 +1,5 @@
-import Toybox.Sensor;
 import Toybox.System;
+import Toybox.Time;
 
 /**
  * BluetoothMonitor - Monitors Bluetooth connection state
@@ -14,10 +14,16 @@ class BluetoothMonitor {
     private var isConnected = false;
     private var lastDisconnectTime = null;
     private var timeoutCallback = null;
+    private var timeoutSeconds = 10;
 
     function initialize(timeoutCallback) {
         self.timeoutCallback = timeoutCallback;
-        self.isConnected = true;
+        var deviceSettings = System.getDeviceSettings();
+        self.isConnected = deviceSettings.phoneConnected;
+        
+        if (!self.isConnected) {
+            self.lastDisconnectTime = Time.now().value();
+        }
     }
 
     /**
@@ -25,9 +31,32 @@ class BluetoothMonitor {
      * Should be called regularly from main app loop
      */
     function update() {
-        // TODO: Check actual Bluetooth connection state
-        // TODO: Implement timeout countdown logic
-        // TODO: Trigger callback when timeout expires
+        var deviceSettings = System.getDeviceSettings();
+        var currentlyConnected = deviceSettings.phoneConnected;
+        
+        // Detect disconnection event
+        if (self.isConnected && !currentlyConnected) {
+            self.lastDisconnectTime = Time.now().value();
+            System.println("BT disconnected - starting timeout");
+        }
+        
+        // Detect reconnection event
+        if (!self.isConnected && currentlyConnected) {
+            self.lastDisconnectTime = null;
+            System.println("BT reconnected");
+        }
+        
+        self.isConnected = currentlyConnected;
+        
+        // Check if timeout expired
+        if (!self.isConnected && self.lastDisconnectTime != null) {
+            var elapsed = getTimeSinceDisconnect();
+            if (elapsed >= self.timeoutSeconds) {
+                if (self.timeoutCallback != null) {
+                    self.timeoutCallback.invoke();
+                }
+            }
+        }
     }
 
     function isConnectionActive() {
@@ -38,7 +67,12 @@ class BluetoothMonitor {
         if (self.lastDisconnectTime == null) {
             return 0;
         }
-        return System.getElapsedTime() - self.lastDisconnectTime;
+        var now = Time.now().value();
+        return now - self.lastDisconnectTime;
+    }
+    
+    function setTimeoutSeconds(seconds) {
+        self.timeoutSeconds = seconds;
     }
 
 }

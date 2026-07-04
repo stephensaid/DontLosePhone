@@ -1,5 +1,6 @@
 import Toybox.Position;
 import Toybox.System;
+import Toybox.Math;
 
 /**
  * GpsProximity - Tracks GPS location and determines if phone is nearby
@@ -25,10 +26,34 @@ class GpsProximity {
     private var currentLocation = null;
     private var threshold = THRESHOLD.MEDIUM;
     private var gpsEnabled = true;
+    private var positioningStarted = false;
 
     function initialize(enabled, threshold) {
         self.gpsEnabled = enabled;
         self.threshold = threshold;
+    }
+    
+    function startPositioning() {
+        if (self.gpsEnabled && !self.positioningStarted) {
+            Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition) as Method(info as Position.Info) as Void);
+            self.positioningStarted = true;
+            System.println("GPS positioning started");
+        }
+    }
+    
+    function stopPositioning() {
+        if (self.positioningStarted) {
+            Position.enableLocationEvents(Position.LOCATION_DISABLE, method(:onPosition) as Method(info as Position.Info) as Void);
+            self.positioningStarted = false;
+            System.println("GPS positioning stopped");
+        }
+    }
+    
+    function onPosition(info) {
+        if (info.accuracy >= Position.QUALITY_USABLE) {
+            self.currentLocation = info.position;
+            System.println("GPS location updated");
+        }
     }
 
     /**
@@ -44,6 +69,10 @@ class GpsProximity {
     function lockPhoneLocation() {
         if (self.currentLocation != null) {
             self.lastPhoneLocation = self.currentLocation;
+            var degrees = self.lastPhoneLocation.toDegrees();
+            System.println("Phone location locked: " + degrees[0] + ", " + degrees[1]);
+        } else {
+            System.println("Phone location locked: GPS not available yet");
         }
     }
 
@@ -52,9 +81,30 @@ class GpsProximity {
      * Returns distance in meters, or null if cannot calculate
      */
     function getDistanceToPhone() {
-        // TODO: Calculate distance using Haversine or similar
-        // TODO: Return meters
-        return 0;
+        if (self.lastPhoneLocation == null || self.currentLocation == null) {
+            return 0;
+        }
+        
+        // Calculate Haversine distance
+        var phoneDegrees = self.lastPhoneLocation.toDegrees();
+        var currentDegrees = self.currentLocation.toDegrees();
+        
+        var lat1 = phoneDegrees[0] * Math.PI / 180;
+        var lon1 = phoneDegrees[1] * Math.PI / 180;
+        var lat2 = currentDegrees[0] * Math.PI / 180;
+        var lon2 = currentDegrees[1] * Math.PI / 180;
+        
+        var dLat = lat2 - lat1;
+        var dLon = lon2 - lon1;
+        
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var distance = 6371000 * c;  // Earth radius in meters
+        
+        return distance;
     }
 
     /**
@@ -75,6 +125,9 @@ class GpsProximity {
 
     function setEnabled(enabled) {
         self.gpsEnabled = enabled;
+        if (!enabled) {
+            stopPositioning();
+        }
     }
 
 }

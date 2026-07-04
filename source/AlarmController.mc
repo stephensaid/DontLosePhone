@@ -1,6 +1,8 @@
 import Toybox.Timer;
 import Toybox.System;
 import Toybox.WatchUi;
+import Toybox.Attention;
+import Toybox.Time;
 
 /**
  * AlarmController - Manages alarm state, snooze timers, and user feedback
@@ -26,23 +28,67 @@ class AlarmController {
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
     private var alarmCallbacks = [];
     private var alertType = 2;  // Default: VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
+    private var snoozeUntil = null;
+    private var alarmCallback = null;
 
-    function initialize() {
+    function initialize(alarmCallback) {
         // Initialize with default snooze durations
+        self.alarmCallback = alarmCallback;
+        self.state = AlarmState.IDLE;
+        
+        // Load alert type from settings
+        self.alertType = Settings.getSetting(Settings.KEY_ALERT_TYPE, Settings.DEFAULT_ALERT_TYPE);
+        
+        // Load snooze durations
+        self.snoozeDurations[0] = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
+        self.snoozeDurations[1] = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
+        self.snoozeDurations[2] = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
+    }
+    
+    function update() {
+        // Check if snooze period has expired
+        if (self.state == AlarmState.CHECKING && self.snoozeUntil != null) {
+            var now = Time.now().value();
+            if (now >= self.snoozeUntil) {
+                System.println("Snooze expired - re-triggering alarm");
+                triggerAlarm();
+            }
+        }
     }
 
     /**
      * Trigger the alarm - phone is confirmed lost
      */
     function triggerAlarm() {
-        self.state = AlarmState.ALARMING;
+        if (self.state == AlarmState.ALARMING) {
+            return;  // Already active
+        }
         
-        // TODO: Switch to AlarmScreen with title, dismiss button, and snooze labels
-        // TODO: Trigger alert based on alertType:
-        //       - 0 (VIBRATION_ONLY): Vibration pattern only
-        //       - 1 (SOUND_ONLY): Audible tone only
-        //       - 2 (VIBRATION_AND_SOUND): Both vibration and sound
-        // TODO: Log event
+        self.state = AlarmState.ALARMING;
+        System.println("ALARM TRIGGERED");
+        
+        // Play alert based on user preference
+        if (Attention has :vibrate && 
+            (self.alertType == Settings.AlertType.VIBRATION_ONLY || 
+             self.alertType == Settings.AlertType.VIBRATION_AND_SOUND)) {
+            var vibeData = [
+                new Attention.VibeProfile(50, 1000),  // 1 second vibrate
+                new Attention.VibeProfile(0, 500),    // 0.5 second pause
+                new Attention.VibeProfile(50, 1000),  // 1 second vibrate
+            ];
+            Attention.vibrate(vibeData);
+        }
+        
+        if (Attention has :playTone && 
+            (self.alertType == Settings.AlertType.SOUND_ONLY || 
+             self.alertType == Settings.AlertType.VIBRATION_AND_SOUND)) {
+            Attention.playTone(Attention.TONE_ALARM);
+        }
+        
+        // Notify UI to show alarm screen
+        if (self.alarmCallback != null) {
+            self.alarmCallback.invoke();
+        }
     }
 
     /**
@@ -50,11 +96,12 @@ class AlarmController {
      */
     function snooze(minutes) {
         if (self.state == AlarmState.ALARMING) {
-            self.state = AlarmState.IDLE;
+            var now = Time.now();
+            var duration = new Time.Duration(minutes * 60);
+            self.snoozeUntil = now.add(duration).value();
+            self.state = AlarmState.CHECKING;
             
-            // TODO: Set snooze timer
-            // TODO: Hide alarm screen
-            // TODO: Resume monitoring
+            System.println("Alarm snoozed for " + minutes + " minutes");
         }
     }
 
@@ -63,9 +110,8 @@ class AlarmController {
      */
     function dismiss() {
         self.state = AlarmState.IDLE;
-        
-        // TODO: Cancel any pending snooze
-        // TODO: Return to normal monitoring
+        self.snoozeUntil = null;
+        System.println("Alarm dismissed");
     }
 
     function isAlarming() {
@@ -82,10 +128,15 @@ class AlarmController {
      */
     function setAlertType(type) {
         self.alertType = type;
+        Settings.setSetting(Settings.KEY_ALERT_TYPE, type);
     }
 
     function getAlertType() {
         return self.alertType;
+    }
+    
+    function getState() {
+        return self.state;
     }
 
 }
