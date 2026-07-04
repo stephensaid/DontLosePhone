@@ -22,7 +22,7 @@ class AlarmController {
         ALARMING
     }
 
-    private var state = AlarmState.IDLE;
+    private var state = AlarmController.AlarmState.IDLE;
     private var snoozeTimer = null;
     // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
@@ -34,7 +34,7 @@ class AlarmController {
     function initialize(alarmCallback) {
         // Initialize with default snooze durations
         self.alarmCallback = alarmCallback;
-        self.state = AlarmState.IDLE;
+        self.state = AlarmController.AlarmState.IDLE;
         
         // Load alert type from settings
         self.alertType = Settings.getSetting(Settings.KEY_ALERT_TYPE, Settings.DEFAULT_ALERT_TYPE);
@@ -47,7 +47,7 @@ class AlarmController {
     
     function update() {
         // Check if snooze period has expired
-        if (self.state == AlarmState.CHECKING && self.snoozeUntil != null) {
+        if (self.state == AlarmController.AlarmState.CHECKING && self.snoozeUntil != null) {
             var now = Time.now().value();
             if (now >= self.snoozeUntil) {
                 System.println("Snooze expired - re-triggering alarm");
@@ -60,11 +60,11 @@ class AlarmController {
      * Trigger the alarm - phone is confirmed lost
      */
     function triggerAlarm() {
-        if (self.state == AlarmState.ALARMING) {
+        if (self.state == AlarmController.AlarmState.ALARMING) {
             return;  // Already active
         }
         
-        self.state = AlarmState.ALARMING;
+        self.state = AlarmController.AlarmState.ALARMING;
         System.println("ALARM TRIGGERED");
         
         // Play alert based on user preference
@@ -95,11 +95,11 @@ class AlarmController {
      * Snooze alarm for specified minutes
      */
     function snooze(minutes) {
-        if (self.state == AlarmState.ALARMING) {
+        if (self.state == AlarmController.AlarmState.ALARMING) {
             var now = Time.now();
             var duration = new Time.Duration(minutes * 60);
             self.snoozeUntil = now.add(duration).value();
-            self.state = AlarmState.CHECKING;
+            self.state = AlarmController.AlarmState.CHECKING;
             
             System.println("Alarm snoozed for " + minutes + " minutes");
         }
@@ -109,13 +109,13 @@ class AlarmController {
      * Dismiss alarm completely
      */
     function dismiss() {
-        self.state = AlarmState.IDLE;
+        self.state = AlarmController.AlarmState.IDLE;
         self.snoozeUntil = null;
         System.println("Alarm dismissed");
     }
 
     function isAlarming() {
-        return self.state == AlarmState.ALARMING;
+        return self.state == AlarmController.AlarmState.ALARMING;
     }
 
     function setSnoozeDurations(duration1, duration2, duration3) {
