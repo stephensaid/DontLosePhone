@@ -24,7 +24,7 @@ class GpsProximity {
 
     private var lastPhoneLocation = null;
     private var currentLocation = null;
-    private var threshold = GpsProximity.THRESHOLD.MEDIUM;
+    private var threshold = 20;  // Default: THRESHOLD.MEDIUM
     private var gpsEnabled = true;
     private var positioningStarted = false;
 

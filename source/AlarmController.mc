@@ -22,7 +22,7 @@ class AlarmController {
         ALARMING
     }
 
-    private var state = AlarmController.AlarmState.IDLE;
+    private var state = 0;  // AlarmState.IDLE
     private var snoozeTimer = null;
     // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
@@ -34,7 +34,7 @@ class AlarmController {
     function initialize(alarmCallback) {
         // Initialize with default snooze durations
         self.alarmCallback = alarmCallback;
-        self.state = AlarmController.AlarmState.IDLE;
+        self.state = 0;  // AlarmState.IDLE
         
         // Load alert type from settings
         self.alertType = Settings.getSetting(Settings.KEY_ALERT_TYPE, Settings.DEFAULT_ALERT_TYPE);
@@ -47,7 +47,7 @@ class AlarmController {
     
     function update() {
         // Check if snooze period has expired
-        if (self.state == AlarmController.AlarmState.CHECKING && self.snoozeUntil != null) {
+        if (self.state == 1 && self.snoozeUntil != null) {  // AlarmState.CHECKING
             var now = Time.now().value();
             if (now >= self.snoozeUntil) {
                 System.println("Snooze expired - re-triggering alarm");
@@ -60,17 +60,17 @@ class AlarmController {
      * Trigger the alarm - phone is confirmed lost
      */
     function triggerAlarm() {
-        if (self.state == AlarmController.AlarmState.ALARMING) {
+        if (self.state == 2) {  // AlarmState.ALARMING
             return;  // Already active
         }
         
-        self.state = AlarmController.AlarmState.ALARMING;
+        self.state = 2;  // AlarmState.ALARMING
         System.println("ALARM TRIGGERED");
         
         // Play alert based on user preference
         if (Attention has :vibrate && 
-            (self.alertType == Settings.AlertType.VIBRATION_ONLY || 
-             self.alertType == Settings.AlertType.VIBRATION_AND_SOUND)) {
+            (self.alertType == 0 || 
+             self.alertType == 2)) {  // VIBRATION_ONLY or VIBRATION_AND_SOUND
             var vibeData = [
                 new Attention.VibeProfile(50, 1000),  // 1 second vibrate
                 new Attention.VibeProfile(0, 500),    // 0.5 second pause
@@ -80,8 +80,8 @@ class AlarmController {
         }
         
         if (Attention has :playTone && 
-            (self.alertType == Settings.AlertType.SOUND_ONLY || 
-             self.alertType == Settings.AlertType.VIBRATION_AND_SOUND)) {
+            (self.alertType == 1 || 
+             self.alertType == 2)) {  // SOUND_ONLY or VIBRATION_AND_SOUND
             Attention.playTone(Attention.TONE_ALARM);
         }
         
@@ -95,11 +95,11 @@ class AlarmController {
      * Snooze alarm for specified minutes
      */
     function snooze(minutes) {
-        if (self.state == AlarmController.AlarmState.ALARMING) {
+        if (self.state == 2) {  // AlarmState.ALARMING
             var now = Time.now();
             var duration = new Time.Duration(minutes * 60);
             self.snoozeUntil = now.add(duration).value();
-            self.state = AlarmController.AlarmState.CHECKING;
+            self.state = 1;  // AlarmState.CHECKING
             
             System.println("Alarm snoozed for " + minutes + " minutes");
         }
@@ -109,13 +109,13 @@ class AlarmController {
      * Dismiss alarm completely
      */
     function dismiss() {
-        self.state = AlarmController.AlarmState.IDLE;
+        self.state = 0;  // AlarmState.IDLE
         self.snoozeUntil = null;
         System.println("Alarm dismissed");
     }
 
     function isAlarming() {
-        return self.state == AlarmController.AlarmState.ALARMING;
+        return self.state == 2;  // AlarmState.ALARMING
     }
 
     function setSnoozeDurations(duration1, duration2, duration3) {

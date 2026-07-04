@@ -39,7 +39,7 @@ class Settings {
     static const DEFAULT_SNOOZE_1 = 5;                                // minutes
     static const DEFAULT_SNOOZE_2 = 20;                               // minutes
     static const DEFAULT_SNOOZE_3 = 0;                                // minutes (0 = disabled)
-    static const DEFAULT_ALERT_TYPE = Settings.AlertType.VIBRATION_AND_SOUND;  // default: both vibration and sound
+    static const DEFAULT_ALERT_TYPE = 2;  // AlertType.VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
 
     /**
      * Get setting value with fallback to default
