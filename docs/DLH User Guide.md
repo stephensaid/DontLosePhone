@@ -17,11 +17,14 @@ Standard phone tethers trigger annoying alarms the second Bluetooth drops, even 
 ### **Tier 2: Smart Motion Gate (Desk Mode)**
 
 * **How it works:** If the connection drops but you are sitting completely still at your desk or resting, the watch keeps the high-power GPS sensor powered off and remains silent.  
-* **The Benefit:** You won't get startled by false alarms while sitting down. The alarm sequence will only proceed if the watch's internal sensor detects that you are actively standing up and taking physical steps.
+* **Walking Detection:** The app detects genuine walking motion—not just any arm movement. Only meaningful step patterns (increased cadence and acceleration) trigger the motion gate.
+* **Transport Mode Detection:** If your speed increases rapidly (e.g., getting on a bike or car), the app recognizes this as leaving with a vehicle and immediately notifies you, bypassing the timeout and motion gate checks.
+* **The Benefit:** You won't get startled by false alarms while sitting down. The alarm sequence will only proceed if the watch's internal sensor detects that you are actively standing up and taking physical steps, OR if your velocity increases significantly (indicating transport).
 
 ### **Tier 3: GPS Proximity Guard (Distance Check)**
 
-* **How it works:** While your phone is safely connected, your watch constantly remembers its exact coordinates. The second the connection drops, it locks that last-connected coordinate as **Point A** (the phone's location).  
+* **How it works:** While your phone is safely connected, your watch continuously maintains a fresh GPS fix. The moment the connection drops, it locks the current GPS coordinate as **Point A** (the phone's location).
+* **GPS Requirement:** Point A can only be locked if the watch has a valid, recent GPS location. Stale or degraded GPS data is not used. If GPS is unavailable when the connection drops, the app falls back to Bluetooth connectivity and timeout monitoring until a valid GPS location is obtained.
 * **The Math:** Once you start walking, the watch measures the actual straight-line distance between your current position and Point A.  
 * **The Trigger:** The alarm will only fire if you physically walk past your set threshold (e.g., 20 meters away). This allows you to walk to a nearby counter to pay for an espresso or grab a cup of water without your watch screaming, but protects you if you walk completely out of the area or if someone walks away with your bike.
 
@@ -64,7 +67,18 @@ The watch's physical buttons are divided logically to make managing an alarm int
 * **Bottom Left Button (Down): Snooze 1 (Short)**  
   * Silences the alert for a quick break (Default: 5 minutes). Can also be set to **Unset** to disable this key.
 
-## **5\. Settings Directory**
+## **6\. Advanced Behaviors**
+
+### **Phone Reconnection**
+
+* **During Active Alarm:** If your phone reconnects while the alarm is sounding, the app automatically stops the alarm and returns to normal monitoring. No user action required.
+* **During Snooze:** If your phone reconnects while snoozed, the app immediately cancels the snooze countdown and resets to its initial monitoring state. The watch will resume background monitoring silently—no notification to the user.
+
+### **Snooze Expiration**
+
+* When a snooze timer expires, the app automatically rechecks all enabled protection tiers (Timeout → Motion Gate → GPS Proximity) before potentially alarming again. This prevents nuisance alerts if conditions have changed since the snooze began.
+
+## **7\. Settings Directory**
 
 You can configure these preferences via the Garmin Connect Mobile app on your smartphone. The watch settings menu provides quick adjustments with clear, concise labels. For detailed explanations of each setting, refer to the descriptions in the Garmin Connect Mobile app or this guide.
 
