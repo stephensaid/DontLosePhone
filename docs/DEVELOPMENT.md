@@ -101,7 +101,8 @@ Then in simulator:
 
 ```
 DontLosePhone/
-├── .copilot-instructions.md  # AI assistant guidance
+├── .github/
+│   └── copilot-instructions.md  # AI assistant guidance
 ├── .vscode/
 │   └── tasks.json            # Build tasks
 ├── docs/
@@ -225,4 +226,4 @@ git push origin main
 
 ## Next Steps
 
-See project status in [.copilot-instructions.md](.copilot-instructions.md) for current phase and upcoming features.
+See project status in [.github/copilot-instructions.md](../.github/copilot-instructions.md) for current phase and upcoming features.

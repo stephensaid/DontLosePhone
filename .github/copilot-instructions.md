@@ -121,6 +121,19 @@ monkeyc.bat --Eno-invalid-symbol -o bin/DontLosePhone.prg -f monkey.jungle -y re
 4. **Follow existing patterns** in codebase (especially enum usage)
 5. **Update Settings.mc** when adding new configurable parameters
 
+## Documentation Conventions
+
+- **All documentation files** must be created in the `docs/` folder
+- **Markdown format** (.md) for all documentation
+- **Naming convention**: Use descriptive names with spaces replaced by underscores or hyphens
+- **Types of documentation**:
+  - Feature specifications and user guides
+  - Architecture and design documents
+  - API documentation
+  - Testing procedures
+- **Root-level docs**: Only README.md, DEVELOPMENT.md, LICENSE, and .github/ folder should contain docs at root level
+- **Update links**: When creating new docs, add references to README.md
+
 ## Phase Status
 
 - ✅ **Phase 1**: Core functionality (BT monitor, motion gate, GPS proximity, alarm controller)

@@ -51,7 +51,7 @@ A Garmin Connect IQ smartwatch application that acts as an active phone tether, 
 
 ## Development
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions and development workflow.
+See [DEVELOPMENT.md](docs/DEVELOPMENT.md) for setup instructions and development workflow.
 
 **Quick Start:**
 1. Install Garmin Connect IQ SDK 9.2.0
@@ -64,8 +64,8 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions and development work
 - **[DLH User Guide](docs/DLH%20User%20Guide.md)** - Complete feature specification
 - **[STATE_MACHINE.md](docs/STATE_MACHINE.md)** - Architecture and state transitions
 - **[SETUP.md](docs/SETUP.md)** - Environment setup instructions
-- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development workflow and guidelines
-- **[.copilot-instructions.md](.copilot-instructions.md)** - AI assistant guidance
+- **[DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Development workflow and guidelines
+- **[Copilot Instructions](.github/copilot-instructions.md)** - AI assistant guidance
 
 ## Repository
 
