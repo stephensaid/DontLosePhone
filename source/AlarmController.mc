@@ -23,10 +23,8 @@ class AlarmController {
     }
 
     private var state = 0;  // AlarmState.IDLE
-    private var snoozeTimer = null;
     // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
     private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
-    private var alarmCallbacks = [];
     private var alertType = 2;  // Default: VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
     private var snoozeUntil = null;
     private var alarmCallback = null;
