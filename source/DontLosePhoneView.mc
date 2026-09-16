@@ -76,7 +76,7 @@ class DontLosePhoneView extends WatchUi.View {
         }
     }
     
-    /**
+/**
      * Draw alarm screen
      */
     function drawAlarmScreen(dc) {
@@ -99,36 +99,51 @@ class DontLosePhoneView extends WatchUi.View {
             Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         
         var snooze1 = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
+        
+        var snooze2Enabled = Settings.getSetting(Settings.KEY_SNOOZE_2_ENABLED, Settings.DEFAULT_SNOOZE_2_ENABLED);
         var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
+
+        var snooze3Enabled = Settings.getSetting(Settings.KEY_SNOOZE_3_ENABLED, Settings.DEFAULT_SNOOZE_3_ENABLED);
+        var snooze3 = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
 
         var radialFont = getRadialFont(22);
 
         if (radialFont != null) {
             var radius = ((width < height) ? width : height) / 2 - 18;
-            System.println("Radial text draw: radius=" + radius);
-            dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze2),
-                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
-                180, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
+
+            // Snooze 1: Bottom-Left (210°)
             dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze1),
                 Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
                 210, radius, Graphics.RADIAL_TEXT_DIRECTION_COUNTER_CLOCKWISE);
+
+            // Snooze 2: Middle-Left (180°)
+            if (snooze2Enabled) {
+                dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze2),
+                    Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
+                    180, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
+            }
+
+            // Snooze 3: Top-Left (150°)
+            if (snooze3Enabled) {
+                dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze3),
+                    Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
+                    150, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
+            }
+
+            // DISMISS: Top Center (90° / 12 o'clock position)
             dc.drawRadialText(centerX, centerY, radialFont, "DISMISS",
                 Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
-                0, radius, Graphics.RADIAL_TEXT_DIRECTION_COUNTER_CLOCKWISE);
-            System.println("Radial text draw: complete");
+                330, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
         }
     }
 
     function getRadialFont(size) {
         var faceNames = [
-            "BionicBold", "ExoSemiBold", "KosugiRegular", "NanumGothicBold",
-            "NanumGothicExtraBold", "NanumGothicRegular", "NotoNaskhArabicBold",
-            "NotoNaskhArabicRegular", "NotoSansArmenianBold", "NotoSansArmenianRegular",
-            "NotoSansHebrewBold", "NotoSansHebrewRegular", "NotoSansSCMedium",
-            "PridiRegular", "PridiRegularGarmin", "PridiSemiBoldGarmin", "RobotoBlack",
-            "RobotoCondensedBold", "RobotoCondensedRegular", "RobotoCondensedRegularItalic",
-            "RobotoRegular", "SakkalMajallaBold", "SakkalMajallaRoman", "Swiss721Bold",
-            "Swiss721Regular", "TomorrowBold", "YantramanavRegular"
+            "RobotoRegular",
+            "RobotoCondensedRegular",
+            "RobotoCondensedBold",
+            "Swiss721Regular",
+            "Swiss721Bold"
         ];
 
         for (var index = 0; index < faceNames.size(); index += 1) {
@@ -164,18 +179,25 @@ class DontLosePhoneView extends WatchUi.View {
         dc.drawLine(cx, cy, cx + 4, cy + 1);
     }
 
-    function formatDuration(minutes) {
-        if (minutes < 60) {
-            return minutes + "m";
+function formatDuration(minutes) {
+        var minVal = 0;
+        if (minutes instanceof Lang.String) {
+            minVal = minutes.toNumber();
+        } else if (minutes instanceof Lang.Number) {
+            minVal = minutes;
         }
 
-        var hours = Math.floor(minutes / 60);
-        var remainingMinutes = minutes % 60;
+        if (minVal < 60) {
+            return minVal.toString() + "m";
+        }
+
+        var hours = Math.floor(minVal / 60);
+        var remainingMinutes = minVal % 60;
         if (remainingMinutes == 0) {
-            return hours + "h";
+            return hours.toString() + "h";
         }
 
-        return hours + "h" + remainingMinutes + "m";
+        return hours.toString() + "h" + remainingMinutes.toString() + "m";
     }
 
     // Called when this View is removed from the screen. Save the

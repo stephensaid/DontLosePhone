@@ -23,6 +23,8 @@ class Settings {
     static const KEY_MOTION_GATE = "dlh_motion_gate";
     static const KEY_GPS_ENABLED = "dlh_gps_enabled";  // CRITICAL: Controls GPS power usage
     static const KEY_GPS_THRESHOLD = "dlh_gps_threshold";
+    static const KEY_SNOOZE_2_ENABLED = "dlh_snooze_2_enabled";
+    static const KEY_SNOOZE_3_ENABLED = "dlh_snooze_3_enabled";
     static const KEY_SNOOZE_1 = "dlh_snooze_1";
     static const KEY_SNOOZE_2 = "dlh_snooze_2";
     static const KEY_SNOOZE_3 = "dlh_snooze_3";
@@ -37,9 +39,12 @@ class Settings {
     static const DEFAULT_GPS_ENABLED = true;                          // enabled (users can disable to save battery)
     static const DEFAULT_GPS_THRESHOLD = 20;                          // meters
     static const DEFAULT_SNOOZE_1 = 5;                                // minutes
-    static const DEFAULT_SNOOZE_2 = 20;                               // minutes
-    static const DEFAULT_SNOOZE_3 = 0;                                // minutes (0 = disabled)
-    static const DEFAULT_ALERT_TYPE = 2;  // AlertType.VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
+    static const DEFAULT_SNOOZE_2 = 15;                               // minutes
+    static const DEFAULT_SNOOZE_3 = 30;                               // minutes 
+
+    static const DEFAULT_SNOOZE_2_ENABLED = true;
+    static const DEFAULT_SNOOZE_3_ENABLED = false;                    // Default off if you want
+    static const DEFAULT_ALERT_TYPE = 2;                              // AlertType.VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
 
     /**
      * Get setting value with fallback to default
@@ -59,7 +64,7 @@ class Settings {
         Application.Properties.setValue(key, value);
     }
 
-    /**
+/**
      * Get all settings as dictionary
      */
     static function getAllSettings() {
@@ -70,7 +75,10 @@ class Settings {
           "gpsThreshold" => getSetting(KEY_GPS_THRESHOLD, DEFAULT_GPS_THRESHOLD),
           "snooze1" => getSetting(KEY_SNOOZE_1, DEFAULT_SNOOZE_1),
           "snooze2" => getSetting(KEY_SNOOZE_2, DEFAULT_SNOOZE_2),
-          "snooze3" => getSetting(KEY_SNOOZE_3, DEFAULT_SNOOZE_3)
+          "snooze2Enabled" => getSetting(KEY_SNOOZE_2_ENABLED, DEFAULT_SNOOZE_2_ENABLED),
+          "snooze3" => getSetting(KEY_SNOOZE_3, DEFAULT_SNOOZE_3),
+          "snooze3Enabled" => getSetting(KEY_SNOOZE_3_ENABLED, DEFAULT_SNOOZE_3_ENABLED),
+          "alertType" => getSetting(KEY_ALERT_TYPE, DEFAULT_ALERT_TYPE)
       } as Dictionary<String, Object>;
     }
 }

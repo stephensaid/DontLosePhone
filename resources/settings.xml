@@ -1,0 +1,19 @@
+<settings>
+    <setting propertyKey="@Properties.dlh_snooze_1" title="Snooze 1 (Bottom Left)">
+        <settingConfig type="numeric" min="1" max="120" />
+    </setting>
+
+    <setting propertyKey="@Properties.dlh_snooze_2_enabled" title="Enable Snooze 2 (Middle Left)">
+        <settingConfig type="boolean" />
+    </setting>
+    <setting propertyKey="@Properties.dlh_snooze_2" title="Snooze 2 Time">
+        <settingConfig type="numeric" min="1" max="120" />
+    </setting>
+
+    <setting propertyKey="@Properties.dlh_snooze_3_enabled" title="Enable Snooze 3 (Bottom Right)">
+        <settingConfig type="boolean" />
+    </setting>
+    <setting propertyKey="@Properties.dlh_snooze_3" title="Snooze 3 Time">
+        <settingConfig type="numeric" min="1" max="120" />
+    </setting>
+</settings>
