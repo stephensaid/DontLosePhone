@@ -2,6 +2,7 @@ import Toybox.Sensor;
 import Toybox.System;
 import Toybox.SensorHistory;
 import Toybox.Time;
+import Toybox.Lang;
 
 /**
  * MotionGate - Detects user motion to gate alarm triggering
@@ -19,11 +20,9 @@ class MotionGate {
 
     private var motionEnabled = true;
     private var motionThreshold = 1.5;  // Configurable threshold
-    private var lastMotionTime = null;
 
     function initialize(enabled) {
         self.motionEnabled = enabled;
-        self.lastMotionTime = Time.now().value();
         
         // Enable sensor listening
         Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
@@ -64,13 +63,15 @@ class MotionGate {
             // Calculate magnitude of acceleration vector
             var magnitude = Math.sqrt(accel[0] * accel[0] + accel[1] * accel[1] + accel[2] * accel[2]);
             
-            // If significantly different from gravity (9.8 m/s²), user is moving
-            if (magnitude > 12.0 || magnitude < 7.0) {
+            // Use motionThreshold as an offset deviation from normal gravity (9.8 m/s²)
+            var upperLimit = 9.8 + self.motionThreshold;
+            var lowerLimit = 9.8 - self.motionThreshold;
+            
+            if (magnitude > upperLimit || magnitude < lowerLimit) {
                 System.println("Motion detected: accel magnitude=" + magnitude);
                 return true;
             }
         }
-        
         return false;
     }
 

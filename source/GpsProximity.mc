@@ -1,6 +1,7 @@
 import Toybox.Position;
 import Toybox.System;
 import Toybox.Math;
+import Toybox.Lang;
 
 /**
  * GpsProximity - Tracks GPS location and determines if phone is nearby
@@ -69,7 +70,7 @@ class GpsProximity {
     function lockPhoneLocation() {
         if (self.currentLocation != null) {
             self.lastPhoneLocation = self.currentLocation;
-            var degrees = self.lastPhoneLocation.toDegrees();
+            var degrees = self.lastPhoneLocation.toDegrees() as Lang.Array<Lang.Double>; // <-- Cast array
             System.println("Phone location locked: " + degrees[0] + ", " + degrees[1]);
         } else {
             System.println("Phone location locked: GPS not available yet");
@@ -86,8 +87,8 @@ class GpsProximity {
         }
         
         // Calculate Haversine distance
-        var phoneDegrees = self.lastPhoneLocation.toDegrees();
-        var currentDegrees = self.currentLocation.toDegrees();
+        var phoneDegrees = self.lastPhoneLocation.toDegrees() as Lang.Array<Lang.Double>;   // <-- Cast array
+        var currentDegrees = self.currentLocation.toDegrees() as Lang.Array<Lang.Double>; // <-- Cast array
         
         var lat1 = phoneDegrees[0] * Math.PI / 180;
         var lon1 = phoneDegrees[1] * Math.PI / 180;

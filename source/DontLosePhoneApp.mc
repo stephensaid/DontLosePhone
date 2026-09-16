@@ -129,7 +129,6 @@ class DontLosePhoneApp extends Application.AppBase {
     function onAlarmTrigger() {
         System.println("Alarm triggered - updating UI");
         if (self.view != null) {
-            self.view.showAlarmScreen();
             WatchUi.requestUpdate();
         }
     }

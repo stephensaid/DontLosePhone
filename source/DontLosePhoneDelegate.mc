@@ -20,14 +20,7 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
         
         var key = keyEvent.getKey();
         
-        // UP button - Dismiss
-        if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_UP) {
-            self.alarmController.dismiss();
-            WatchUi.requestUpdate();
-            return true;
-        }
-        
-        // DOWN button or bottom left - Snooze 1
+        // DOWN button - Snooze 1
         if (key == WatchUi.KEY_DOWN) {
             var snooze1 = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
             if (snooze1 > 0) {
@@ -36,14 +29,19 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
             }
             return true;
         }
-        
-        // ESC or bottom right - Snooze 2/3 (device dependent)
-        if (key == WatchUi.KEY_ESC) {
+
+        // UP button - Snooze 2
+        if (key == WatchUi.KEY_UP || key == WatchUi.KEY_ENTER) {
             var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
             if (snooze2 > 0) {
                 self.alarmController.snooze(snooze2);
                 WatchUi.requestUpdate();
             }
+            return true;
+        }
+        
+        // ESC is handled as Back/Dismiss by onBack below.
+        if (key == WatchUi.KEY_ESC) {
             return true;
         }
         
@@ -73,13 +71,10 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function onBack() {
-        // Back button - Snooze 3 (bottom right)
+        // Back button - Dismiss
         if (self.alarmController != null && self.alarmController.isAlarming()) {
-            var snooze3 = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
-            if (snooze3 > 0) {
-                self.alarmController.snooze(snooze3);
-                WatchUi.requestUpdate();
-            }
+            self.alarmController.dismiss();
+            WatchUi.requestUpdate();
             return true;
         }
         return false;

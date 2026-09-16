@@ -3,14 +3,14 @@ import Toybox.System;
 import Toybox.Graphics;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
+import Toybox.Math;
 
-class DontLosePhoneView extends WatchUi.WatchFace {
+class DontLosePhoneView extends WatchUi.View {
 
     private var alarmController;
-    private var showingAlarm = false;
 
     function initialize(alarmController) {
-        WatchFace.initialize();
+        View.initialize();
         self.alarmController = alarmController;
     }
 
@@ -82,58 +82,100 @@ class DontLosePhoneView extends WatchUi.WatchFace {
     function drawAlarmScreen(dc) {
         var width = dc.getWidth();
         var height = dc.getHeight();
-        
-        // Red background for alarm
-        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_RED);
+        var centerX = width / 2;
+        var centerY = height / 2;
+
+        // Use the device default presentation: black background and white built-in fonts.
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-        
-        // Title
+
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width / 2, 40, 
-            Graphics.FONT_LARGE, "PHONE LEFT", 
+        dc.drawText(centerX, centerY - 24, 
+            Graphics.FONT_MEDIUM, "PHONE LEFT", 
             Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         
-        dc.drawText(width / 2, 70, 
-            Graphics.FONT_LARGE, "BEHIND!", 
+        dc.drawText(centerX, centerY + 8, 
+            Graphics.FONT_MEDIUM, "BEHIND!", 
             Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         
-        // Snooze options
         var snooze1 = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
         var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
-        var snooze3 = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
-        
-        // Draw button labels
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        
-        // Top button - Dismiss
-        dc.drawText(width / 2, height / 2 - 20, 
-            Graphics.FONT_SMALL, "UP: Dismiss", 
-            Graphics.TEXT_JUSTIFY_CENTER);
-        
-        // Bottom left - Snooze 1
-        if (snooze1 > 0) {
-            dc.drawText(20, height - 40, 
-                Graphics.FONT_TINY, "< " + snooze1 + "min", 
-                Graphics.TEXT_JUSTIFY_LEFT);
-        }
-        
-        // Middle left - Snooze 2
-        if (snooze2 > 0) {
-            dc.drawText(20, height / 2, 
-                Graphics.FONT_TINY, "< " + snooze2 + "min", 
-                Graphics.TEXT_JUSTIFY_LEFT);
-        }
-        
-        // Bottom right - Snooze 3
-        if (snooze3 > 0) {
-            dc.drawText(width - 20, height - 40, 
-                Graphics.FONT_TINY, snooze3 + "min >", 
-                Graphics.TEXT_JUSTIFY_RIGHT);
+
+        var radialFont = getRadialFont(22);
+
+        if (radialFont != null) {
+            var radius = ((width < height) ? width : height) / 2 - 18;
+            System.println("Radial text draw: radius=" + radius);
+            dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze2),
+                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
+                180, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
+            dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze1),
+                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
+                210, radius, Graphics.RADIAL_TEXT_DIRECTION_COUNTER_CLOCKWISE);
+            dc.drawRadialText(centerX, centerY, radialFont, "DISMISS",
+                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
+                0, radius, Graphics.RADIAL_TEXT_DIRECTION_COUNTER_CLOCKWISE);
+            System.println("Radial text draw: complete");
         }
     }
-    
-    function showAlarmScreen() {
-        self.showingAlarm = true;
+
+    function getRadialFont(size) {
+        var faceNames = [
+            "BionicBold", "ExoSemiBold", "KosugiRegular", "NanumGothicBold",
+            "NanumGothicExtraBold", "NanumGothicRegular", "NotoNaskhArabicBold",
+            "NotoNaskhArabicRegular", "NotoSansArmenianBold", "NotoSansArmenianRegular",
+            "NotoSansHebrewBold", "NotoSansHebrewRegular", "NotoSansSCMedium",
+            "PridiRegular", "PridiRegularGarmin", "PridiSemiBoldGarmin", "RobotoBlack",
+            "RobotoCondensedBold", "RobotoCondensedRegular", "RobotoCondensedRegularItalic",
+            "RobotoRegular", "SakkalMajallaBold", "SakkalMajallaRoman", "Swiss721Bold",
+            "Swiss721Regular", "TomorrowBold", "YantramanavRegular"
+        ];
+
+        for (var index = 0; index < faceNames.size(); index += 1) {
+            var faceName = faceNames[index];
+            System.println("Testing vector font: " + faceName);
+            try {
+                var font = Graphics.getVectorFont({:face => faceName, :size => size});
+                if (font != null) {
+                    System.println("Vector font loaded: " + faceName);
+                    return font;
+                }
+                System.println("Vector font unavailable: " + faceName);
+            } catch (e) {
+                System.println("Vector font error: " + faceName + " - " + e.toString());
+            }
+        }
+
+        System.println("No supported vector font found");
+        return null;
+    }
+
+    function drawDismissIcon(dc, cx, cy, radius) {
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawCircle(cx, cy, radius);
+        dc.drawLine(cx - 4, cy - 4, cx + 4, cy + 4);
+        dc.drawLine(cx - 4, cy + 4, cx + 4, cy - 4);
+    }
+
+    function drawClockIcon(dc, cx, cy, radius) {
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawCircle(cx, cy, radius);
+        dc.drawLine(cx, cy, cx, cy - 5);
+        dc.drawLine(cx, cy, cx + 4, cy + 1);
+    }
+
+    function formatDuration(minutes) {
+        if (minutes < 60) {
+            return minutes + "m";
+        }
+
+        var hours = Math.floor(minutes / 60);
+        var remainingMinutes = minutes % 60;
+        if (remainingMinutes == 0) {
+            return hours + "h";
+        }
+
+        return hours + "h" + remainingMinutes + "m";
     }
 
     // Called when this View is removed from the screen. Save the

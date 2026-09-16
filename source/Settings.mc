@@ -1,3 +1,4 @@
+import Toybox.Lang;
 import Toybox.System;
 import Toybox.Application;
 
@@ -10,7 +11,6 @@ import Toybox.Application;
  * - Manage settings UI
  */
 class Settings {
-
     // Alert type constants (universal setting for all alerts)
     enum AlertType {
         VIBRATION_ONLY = 0,
@@ -45,36 +45,32 @@ class Settings {
      * Get setting value with fallback to default
      */
     static function getSetting(key, defaultValue) {
-        var app = Application.getApp();
-        var value = app.getProperty(key);
-        
-        if (value == null) {
+       try {
+            return Application.Properties.getValue(key);
+        } catch (e) {
             return defaultValue;
         }
-        return value;
     }
 
     /**
      * Save setting value
      */
     static function setSetting(key, value) {
-        var app = Application.getApp();
-        app.setProperty(key, value);
+        Application.Properties.setValue(key, value);
     }
 
     /**
      * Get all settings as dictionary
      */
     static function getAllSettings() {
-        return {
-            "timeout" => getSetting(KEY_TIMEOUT, DEFAULT_TIMEOUT),
-            "motionGate" => getSetting(KEY_MOTION_GATE, DEFAULT_MOTION_GATE),
-            "gpsEnabled" => getSetting(KEY_GPS_ENABLED, DEFAULT_GPS_ENABLED),
-            "gpsThreshold" => getSetting(KEY_GPS_THRESHOLD, DEFAULT_GPS_THRESHOLD),
-            "snooze1" => getSetting(KEY_SNOOZE_1, DEFAULT_SNOOZE_1),
-            "snooze2" => getSetting(KEY_SNOOZE_2, DEFAULT_SNOOZE_2),
-            "snooze3" => getSetting(KEY_SNOOZE_3, DEFAULT_SNOOZE_3)
-        };
+      return {
+          "timeout" => getSetting(KEY_TIMEOUT, DEFAULT_TIMEOUT),
+          "motionGate" => getSetting(KEY_MOTION_GATE, DEFAULT_MOTION_GATE),
+          "gpsEnabled" => getSetting(KEY_GPS_ENABLED, DEFAULT_GPS_ENABLED),
+          "gpsThreshold" => getSetting(KEY_GPS_THRESHOLD, DEFAULT_GPS_THRESHOLD),
+          "snooze1" => getSetting(KEY_SNOOZE_1, DEFAULT_SNOOZE_1),
+          "snooze2" => getSetting(KEY_SNOOZE_2, DEFAULT_SNOOZE_2),
+          "snooze3" => getSetting(KEY_SNOOZE_3, DEFAULT_SNOOZE_3)
+      } as Dictionary<String, Object>;
     }
-
 }

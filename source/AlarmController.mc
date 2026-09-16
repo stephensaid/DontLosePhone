@@ -3,6 +3,7 @@ import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.Attention;
 import Toybox.Time;
+import Toybox.Lang;
 
 /**
  * AlarmController - Manages alarm state, snooze timers, and user feedback
@@ -24,7 +25,7 @@ class AlarmController {
 
     private var state = 0;  // AlarmState.IDLE
     // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (BottomRight)]
-    private var snoozeDurations = [5, 20, 0];  // Default: 5min, 20min, custom
+    private var snoozeDurations as Lang.Array<Lang.Number> = [5, 20, 0] as Lang.Array<Lang.Number>; // Default: 5min, 20min, custom
     private var alertType = 2;  // Default: VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
     private var snoozeUntil = null;
     private var alarmCallback = null;
@@ -36,11 +37,11 @@ class AlarmController {
         
         // Load alert type from settings
         self.alertType = Settings.getSetting(Settings.KEY_ALERT_TYPE, Settings.DEFAULT_ALERT_TYPE);
-        
+
         // Load snooze durations
-        self.snoozeDurations[0] = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
-        self.snoozeDurations[1] = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
-        self.snoozeDurations[2] = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
+        self.snoozeDurations[0] = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1) as Lang.Number;
+        self.snoozeDurations[1] = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2) as Lang.Number;
+        self.snoozeDurations[2] = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3) as Lang.Number;
     }
     
     function update() {
@@ -117,7 +118,7 @@ class AlarmController {
     }
 
     function setSnoozeDurations(duration1, duration2, duration3) {
-        self.snoozeDurations = [duration1, duration2, duration3];
+        self.snoozeDurations = [duration1, duration2, duration3] as Lang.Array<Lang.Number>;
     }
 
     /**
