@@ -123,11 +123,11 @@ class DontLosePhoneView extends WatchUi.View {
                     180, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
             }
 
-            // Snooze 3: Top-Left (150°)
+                // Snooze 3: Top-Right (30°)
             if (snooze3Enabled) {
                 dc.drawRadialText(centerX, centerY, radialFont, formatDuration(snooze3),
                     Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
-                    150, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
+                    30, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
             }
 
             // DISMISS: Bottom-Right (330°)

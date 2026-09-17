@@ -13,6 +13,39 @@ class DontLosePhoneApp extends Application.AppBase {
     private var updateTimer;
     private var view;
 
+    function applyRuntimeSettings() {
+        var timeout = Settings.getSetting(Settings.KEY_TIMEOUT, Settings.DEFAULT_TIMEOUT);
+        var motionEnabled = Settings.getSetting(Settings.KEY_MOTION_GATE, Settings.DEFAULT_MOTION_GATE);
+        var gpsEnabled = Settings.getSetting(Settings.KEY_GPS_ENABLED, Settings.DEFAULT_GPS_ENABLED);
+        var gpsThreshold = Settings.getSetting(Settings.KEY_GPS_THRESHOLD, Settings.DEFAULT_GPS_THRESHOLD);
+
+        if (self.btMonitor != null) {
+            self.btMonitor.setTimeoutSeconds(timeout);
+        }
+
+        if (self.motionGate != null) {
+            self.motionGate.setEnabled(motionEnabled);
+        }
+
+        if (self.gpsProximity != null) {
+            self.gpsProximity.setThreshold(gpsThreshold);
+            self.gpsProximity.setEnabled(gpsEnabled);
+            if (gpsEnabled) {
+                self.gpsProximity.startPositioning();
+            }
+        }
+
+        if (self.alarmController != null) {
+            var snooze1 = Settings.getSetting(Settings.KEY_SNOOZE_1, Settings.DEFAULT_SNOOZE_1);
+            var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
+            var snooze3 = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
+            var alertType = Settings.getSetting(Settings.KEY_ALERT_TYPE, Settings.DEFAULT_ALERT_TYPE);
+
+            self.alarmController.setSnoozeDurations(snooze1, snooze2, snooze3);
+            self.alarmController.setAlertType(alertType);
+        }
+    }
+
     function initialize() {
         AppBase.initialize();
         
@@ -28,11 +61,14 @@ class DontLosePhoneApp extends Application.AppBase {
         );
         
         self.alarmController = new AlarmController(method(:onAlarmTrigger));
-        
-        // Start GPS if enabled
-        if (Settings.getSetting(Settings.KEY_GPS_ENABLED, Settings.DEFAULT_GPS_ENABLED)) {
-            self.gpsProximity.startPositioning();
-        }
+
+        applyRuntimeSettings();
+    }
+
+    function onSettingsChanged() {
+        System.println("Settings changed - applying runtime values");
+        applyRuntimeSettings();
+        WatchUi.requestUpdate();
     }
 
     // onStart() is called on application start up
@@ -138,4 +174,18 @@ class DontLosePhoneApp extends Application.AppBase {
         self.view = new DontLosePhoneView(self.alarmController);
         var delegate = new DontLosePhoneDelegate(self.alarmController);
         return [ self.view, delegate ];
-    }\n    \n    function getBluetoothMonitor() {\n        return self.btMonitor;\n    }\n    \n    function getAlarmController() {\n        return self.alarmController;\n    }\n\n}\n\nfunction getApp() {\n    return Application.getApp();\n}
+    }
+
+    function getBluetoothMonitor() {
+        return self.btMonitor;
+    }
+
+    function getAlarmController() {
+        return self.alarmController;
+    }
+
+}
+
+function getApp() {
+    return Application.getApp();
+}

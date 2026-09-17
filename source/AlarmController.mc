@@ -24,7 +24,7 @@ class AlarmController {
     }
 
     private var state = 0;  // AlarmState.IDLE
-    // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (TopLeft), Dismiss (BottomRight)]
+    // Button mapping: [Snooze1 (BottomLeft), Snooze2 (MiddleLeft), Snooze3 (TopRight), Dismiss (BottomRight)]
     private var snoozeDurations as Lang.Array<Lang.Number> = [5, 20, 0] as Lang.Array<Lang.Number>; // Default: 5min, 20min, custom
     private var alertType = 2;  // Default: VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
     private var snoozeUntil = null;
