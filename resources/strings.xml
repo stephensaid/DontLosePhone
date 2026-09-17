@@ -1,3 +1,20 @@
-<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
-    <string id="AppName">Dont Lose Phone</string>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+  <string id="AppName">Don't Lose Phone</string>
+    <string id="DismissAlarm">Dismiss</string>
+    <string id="Snooze">Snooze</string>
+    <string
+    id="TimeElapsed">Time Elapsed</string>
+    <string id="PhoneLost">Phone Lost!</string>
+    <string id="ConnectionLost">Connection Lost</string>
+    <string
+    id="CheckingMotion">Checking Motion...</string>
+    <string id="SettingTitle">DLH Settings</string>
+    <string id="TimeoutSetting">Timeout (sec)</string>
+    <string
+    id="MotionGate">Motion Gate</string>
+    <string id="GpsThreshold">GPS Threshold</string>
+    <string id="On">On</string>
+    <string
+    id="Off">Off</string>
 </resources>
