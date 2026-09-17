@@ -30,12 +30,15 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
 
-        // UP button - Snooze 2
-        if (key == WatchUi.KEY_UP || key == WatchUi.KEY_ENTER) {
-            var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
-            if (snooze2 > 0) {
-                self.alarmController.snooze(snooze2);
-                WatchUi.requestUpdate();
+        // ENTER/START (top-right) - Snooze 3 (optional)
+        if (key == WatchUi.KEY_ENTER) {
+            var snooze3Enabled = Settings.getSetting(Settings.KEY_SNOOZE_3_ENABLED, Settings.DEFAULT_SNOOZE_3_ENABLED);
+            if (snooze3Enabled) {
+                var snooze3 = Settings.getSetting(Settings.KEY_SNOOZE_3, Settings.DEFAULT_SNOOZE_3);
+                if (snooze3 > 0) {
+                    self.alarmController.snooze(snooze3);
+                    WatchUi.requestUpdate();
+                }
             }
             return true;
         }
@@ -49,14 +52,16 @@ class DontLosePhoneDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function onMenu() {
-        // Middle left button pressed
+        // Middle-left button - Snooze 2 (optional)
         if (self.alarmController != null) {
             if (self.alarmController.isAlarming()) {
-                // Snooze when alarm is active
-                var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
-                if (snooze2 > 0) {
-                    self.alarmController.snooze(snooze2);
-                    WatchUi.requestUpdate();
+                var snooze2Enabled = Settings.getSetting(Settings.KEY_SNOOZE_2_ENABLED, Settings.DEFAULT_SNOOZE_2_ENABLED);
+                if (snooze2Enabled) {
+                    var snooze2 = Settings.getSetting(Settings.KEY_SNOOZE_2, Settings.DEFAULT_SNOOZE_2);
+                    if (snooze2 > 0) {
+                        self.alarmController.snooze(snooze2);
+                        WatchUi.requestUpdate();
+                    }
                 }
                 return true;
             } else {

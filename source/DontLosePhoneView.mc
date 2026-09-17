@@ -130,7 +130,7 @@ class DontLosePhoneView extends WatchUi.View {
                     150, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
             }
 
-            // DISMISS: Top Center (90° / 12 o'clock position)
+            // DISMISS: Bottom-Right (330°)
             dc.drawRadialText(centerX, centerY, radialFont, "DISMISS",
                 Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
                 330, radius, Graphics.RADIAL_TEXT_DIRECTION_CLOCKWISE);
