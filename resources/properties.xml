@@ -1,12 +1,12 @@
 <properties>
-    <property id="dlh_timeout" type="number">10</property>
-    <property id="dlh_motion_gate" type="boolean">true</property>
-    <property id="dlh_gps_enabled" type="boolean">true</property>
-    <property id="dlh_gps_threshold" type="number">20</property>
-    <property id="dlh_snooze_1" type="number">5</property>
-    <property id="dlh_snooze_2" type="number">15</property>
-    <property id="dlh_snooze_2_enabled" type="boolean">true</property>
-    <property id="dlh_snooze_3" type="number">30</property>
-    <property id="dlh_snooze_3_enabled" type="boolean">true</property>
-    <property id="dlh_alert_type" type="number">2</property>
+  <property id="dlh_timeout" type="number">10</property>
+  <property id="dlh_motion_gate" type="boolean">true</property>
+  <property id="dlh_gps_enabled" type="boolean">true</property>
+  <property id="dlh_gps_threshold" type="number">20</property>
+  <property id="dlh_snooze_1" type="number">5</property>
+  <property id="dlh_snooze_2" type="number">15</property>
+  <property id="dlh_snooze_2_enabled" type="boolean">false</property>
+  <property id="dlh_snooze_3" type="number">30</property>
+  <property id="dlh_snooze_3_enabled" type="boolean">false</property>
+  <property id="dlh_alert_type" type="number">2</property>
 </properties>

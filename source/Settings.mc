@@ -42,8 +42,8 @@ class Settings {
     static const DEFAULT_SNOOZE_2 = 15;                               // minutes
     static const DEFAULT_SNOOZE_3 = 30;                               // minutes 
 
-    static const DEFAULT_SNOOZE_2_ENABLED = true;
-    static const DEFAULT_SNOOZE_3_ENABLED = false;                    // Default off if you want
+    static const DEFAULT_SNOOZE_2_ENABLED = false;
+    static const DEFAULT_SNOOZE_3_ENABLED = false;
     static const DEFAULT_ALERT_TYPE = 2;                              // AlertType.VIBRATION_AND_SOUND (0=vibration, 1=sound, 2=both)
 
     /**

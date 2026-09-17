@@ -1,19 +1,41 @@
 <settings>
-    <setting propertyKey="@Properties.dlh_snooze_1" title="Snooze 1 (Bottom Left)">
-        <settingConfig type="numeric" min="1" max="120" />
-    </setting>
+  <setting propertyKey="@Properties.dlh_timeout" title="Disconnect Timeout (sec)">
+    <settingConfig type="numeric" min="1" max="120" />
+  </setting>
 
-    <setting propertyKey="@Properties.dlh_snooze_2_enabled" title="Enable Snooze 2 (Middle Left)">
-        <settingConfig type="boolean" />
-    </setting>
-    <setting propertyKey="@Properties.dlh_snooze_2" title="Snooze 2 Time">
-        <settingConfig type="numeric" min="1" max="120" />
-    </setting>
+  <setting propertyKey="@Properties.dlh_motion_gate" title="Require Movement (Motion Gate)">
+    <settingConfig type="boolean" />
+  </setting>
 
-    <setting propertyKey="@Properties.dlh_snooze_3_enabled" title="Enable Snooze 3 (Bottom Right)">
-        <settingConfig type="boolean" />
-    </setting>
-    <setting propertyKey="@Properties.dlh_snooze_3" title="Snooze 3 Time">
-        <settingConfig type="numeric" min="1" max="120" />
-    </setting>
+  <setting propertyKey="@Properties.dlh_gps_enabled" title="Enable GPS Proximity Check">
+    <settingConfig type="boolean" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_gps_threshold" title="GPS Distance Threshold (m)">
+    <settingConfig type="numeric" min="5" max="500" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_snooze_1" title="Snooze 1 Minutes (Bottom Left)">
+    <settingConfig type="numeric" min="1" max="120" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_snooze_2_enabled" title="Enable Snooze 2 (Middle Left)">
+    <settingConfig type="boolean" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_snooze_2" title="Snooze 2 Minutes">
+    <settingConfig type="numeric" min="1" max="120" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_snooze_3_enabled" title="Enable Snooze 3 (Top Right)">
+    <settingConfig type="boolean" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_snooze_3" title="Snooze 3 Minutes">
+    <settingConfig type="numeric" min="1" max="120" />
+  </setting>
+
+  <setting propertyKey="@Properties.dlh_alert_type" title="Alert Mode (0=Vibe, 1=Sound, 2=Both)">
+    <settingConfig type="numeric" min="0" max="2" />
+  </setting>
 </settings>
